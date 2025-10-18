@@ -9,6 +9,10 @@
  */
 
 import type * as myFunctions from "../myFunctions.js";
+import type * as schema_courses from "../schema/courses.js";
+import type * as schema_students from "../schema/students.js";
+import type * as schema_teachers from "../schema/teachers.js";
+import type * as schema_users from "../schema/users.js";
 
 import type {
   ApiFromModules,
@@ -26,6 +30,10 @@ import type {
  */
 declare const fullApi: ApiFromModules<{
   myFunctions: typeof myFunctions;
+  "schema/courses": typeof schema_courses;
+  "schema/students": typeof schema_students;
+  "schema/teachers": typeof schema_teachers;
+  "schema/users": typeof schema_users;
 }>;
 declare const fullApiWithMounts: typeof fullApi;
 
