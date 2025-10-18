@@ -23,7 +23,7 @@ export const listNumbers = query({
       .take(args.count);
     return {
       viewer: (await ctx.auth.getUserIdentity())?.subject ?? null,
-      numbers: numbers.reverse().map((number) => number.value),
+      numbers: numbers.reverse().map((number) => {return {id: number._id, value: number.value}}),
     };
   },
 });
@@ -74,5 +74,15 @@ export const myAction = action({
     await ctx.runMutation(api.myFunctions.addNumber, {
       value: args.first,
     });
+  },
+});
+
+export const updateNumber = mutation({
+  args: {
+    id: v.id('numbers'),
+    value: v.number(),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.patch(args.id, { value: args.value });
   },
 });

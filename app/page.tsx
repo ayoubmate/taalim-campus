@@ -5,7 +5,9 @@ import { api } from '../convex/_generated/api';
 import Link from 'next/link';
 import { useAuth } from '@workos-inc/authkit-nextjs/components';
 import type { User } from '@workos-inc/node';
-
+import { useState } from 'react';
+import { Id } from '../convex/_generated/dataModel';
+import { UpdateNumberDialog } from '../components/UpdateNumberDialog';
 export default function Home() {
   const { user, signOut } = useAuth();
 
@@ -43,6 +45,9 @@ function SignInForm() {
 }
 
 function Content() {
+  const [numberToUpdate, setNumberToUpdate] = useState < Id<"numbers"> | null > (null);
+  const [isDialogOpen, setIsDialogOpen] = useState < boolean > (false);
+
   const { viewer, numbers } =
     useQuery(api.myFunctions.listNumbers, {
       count: 10,
@@ -52,6 +57,11 @@ function Content() {
   if (viewer === undefined || numbers === undefined) {
     return <div className="mx-auto"></div>;
   }
+
+  const onCloseDialog = () => {
+    setIsDialogOpen(false);
+    setNumberToUpdate(null);
+  };
 
   return (
     <div className="flex flex-col gap-8 max-w-lg mx-auto">
@@ -69,23 +79,22 @@ function Content() {
         >
           Add a random number
         </button>
-      </p>
-      <p>Numbers: {numbers?.length === 0 ? 'Click the button!' : (numbers?.join(', ') ?? '...')}</p>
-      <p>
-        Edit{' '}
-        <code className="text-sm font-bold font-mono bg-slate-200 dark:bg-slate-800 px-1 py-0.5 rounded-md">
-          convex/myFunctions.ts
-        </code>{' '}
-        to change your backend
-      </p>
-      <p>
-        Edit{' '}
-        <code className="text-sm font-bold font-mono bg-slate-200 dark:bg-slate-800 px-1 py-0.5 rounded-md">
-          app/page.tsx
-        </code>{' '}
-        to change your frontend
-      </p>
-      <p>
+        </p>
+
+
+
+        {(numbers.length > 0 && numbers !== undefined) ? <ul>
+          {numbers.map((number) => <li onClick={() => { setNumberToUpdate(number.id); setIsDialogOpen(true); }} key={number.id}>{number.value}</li>)}
+        </ul> : <p>No numbers yet</p>}
+
+        {isDialogOpen && numberToUpdate !== null &&
+        <UpdateNumberDialog isDialogOpen={isDialogOpen} onClose={onCloseDialog} numberToUpdateId={numberToUpdate} />}
+
+
+
+
+
+       <p>
         See the{' '}
         <Link href="/server" className="underline hover:no-underline">
           /server route
