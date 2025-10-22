@@ -8,10 +8,11 @@
  * @module
  */
 
-import type * as myFunctions from "../myFunctions.js";
+import type * as schema_activities from "../schema/activities.js";
 import type * as schema_chapters from "../schema/chapters.js";
+import type * as schema_comprehension from "../schema/comprehension.js";
 import type * as schema_courses from "../schema/courses.js";
-import type * as schema_exercices from "../schema/exercices.js";
+import type * as schema_exercises from "../schema/exercises.js";
 import type * as schema_materials from "../schema/materials.js";
 import type * as schema_objectives from "../schema/objectives.js";
 import type * as schema_students from "../schema/students.js";
@@ -33,10 +34,11 @@ import type {
  * ```
  */
 declare const fullApi: ApiFromModules<{
-  myFunctions: typeof myFunctions;
+  "schema/activities": typeof schema_activities;
   "schema/chapters": typeof schema_chapters;
+  "schema/comprehension": typeof schema_comprehension;
   "schema/courses": typeof schema_courses;
-  "schema/exercices": typeof schema_exercices;
+  "schema/exercises": typeof schema_exercises;
   "schema/materials": typeof schema_materials;
   "schema/objectives": typeof schema_objectives;
   "schema/students": typeof schema_students;
